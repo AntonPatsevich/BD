@@ -1,0 +1,122 @@
+﻿@model WebApplication2.ModelsDB.lot
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>lot</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.district.district_def)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.district.district_def)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lots_type.Type_Def)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lots_type.Type_Def)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.street.street_def)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.street.street_def)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descriptionn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descriptionn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.area)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.area)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.likes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.likes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.number_house)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.number_house)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.number_flat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.number_flat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.count_rooms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.count_rooms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Raiting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Raiting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Metro_stations)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Metro_stations)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

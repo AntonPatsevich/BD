@@ -1,0 +1,22 @@
+﻿@model IEnumerable < WebApplication2.ModelsDB.lot>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = "Информация о недвижимости";
+}
+<h2>Информация о недвижимости</h2>
+<hr />
+@foreach (var lot in Model)
+{<div>
+        <h4>@lot.name</h4>
+        <p>Район: @lot.street.district.district_def</p>
+        <p>Улица: @lot.street.street_def </p>
+        <p>Цена: @lot.price $</p>
+        <p>Площадь: @lot.area кв.м</p>
+        <p>Тип: @lot.lots_type.Type_Def</p>
+        <a class="btn btn-primary" href=@Url.Action("Lots", "Home", new { id = lot.id })>Назад</a>
+    </div>
+}
+

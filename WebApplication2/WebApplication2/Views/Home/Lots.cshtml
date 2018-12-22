@@ -1,0 +1,37 @@
+﻿@model IEnumerable<WebApplication2.ModelsDB.lot>
+@using WebApplication2.ModelsDB
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = "Каталог недвижимости";
+}
+<h2>Каталог недвижимости</h2>
+<@*form method="get">
+    <div class="form-inline">
+        <label class="control-label">Тип: </label>
+        @Html.DropDownList("team", Model.Teams as SelectList,
+                    htmlAttributes: new { @class = "form-control" })
+
+        <label class="control-label">Район: </label>
+        @Html.DropDownList("position", Model.Positions as SelectList,
+                htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+<hr />*
+
+
+@foreach (var lot in Model)
+{<div class="well well-large todiv">
+
+
+        <a href=@Url.Action("Lot", "Home", new { id = lot.id })><h4>@lot.name </h4></a>
+        <p>Описание: @lot.Descriptionn</p>
+        <p>Цена: @lot.price</p>
+        <p>Площадь: @lot.area</p>
+        <a class="btn btn-success" href=@Url.Action("Lot", "Home", new { id = lot.id })>Подробнее</a>
+    </div>
+
+}
