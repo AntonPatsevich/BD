@@ -1,0 +1,119 @@
+﻿@model WebApplication2.Models.LAD
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="form-group">
+    <input class="form-control" type="text" placeholder="Имя" id="name">
+</div>
+<div class="form-group">
+    <input class="form-control" type="text" placeholder="Описание" id="dis">
+    </div>
+<div class="form-group">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+        </div>
+        <input type="number" placeholder="Цена" id="Price" class="form-control" aria-label="Amount (to the nearest dollar)">
+        <div class="input-group-append">
+            <span class="input-group-text">.00</span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <input type="number" placeholder="Площадь" id="aria" class="form-control">
+    </div>
+<div class="form-group">
+    <input type="number" placeholder="Номер дома" id="num_house" class="form-control">
+    </div>
+<div class="form-group">
+    <input type="number" placeholder="Номер квартиры" id="num_Flat" class="form-control">
+    </div>
+<div class="form-group">
+    <input type="number" placeholder="Количество комнат" id="count_rooms" class="form-control">
+</div>
+
+
+<div class="form-group">
+    <label for="selectType1">Тип объекта</label>
+    <select id="selectType1" style="max-width: 100%;" class="custom-select my-1 mr-sm-2">
+        @foreach (var ff in Model.LotsTypes)
+        {
+            <option>@ff.Type_Def</option>
+        }
+    </select>
+</div>
+
+
+<div id="ICity" class="form-group">
+    <label for="selectType">Район</label>
+    <select id="selectType" style="max-width: 100%;" class="custom-select my-1 mr-sm-2">
+        @foreach (var ff in Model.Districts)
+        {
+            <option>@ff.district_def</option>
+        }
+    </select>
+</div>
+    <div id="IStreet" class="form-group"></div>
+
+    <script>
+        $('#selectType').on('change',
+            function () {
+                var tt = $('#selectType').val();
+                $('#IStreet').load('/User/AjaxStreet?name=' + tt);
+            });
+    </script>
+
+
+
+
+
+<div class="form-group row">
+    <label for="inputPassword1" class="col-sm-3 col-form-label">Файлы</label>
+    <div class="col-sm-9">
+        <input type="file" class="form-control" style="max-width: 100%;" id="files" placeholder="Password" multiple="true">
+    </div>
+</div>
+<button type="button" class="btn btn-outline-dark" onclick="add();">Dark</button>
+
+
+@Scripts.Render("~/Scripts/Upload/Up.js")
+<script>
+    function add() {
+        var val_name = $('#name').val();
+        var val_dis = $('#dis').val();
+        var val_Price = $('#Price').val();
+        var val_aria = $('#aria').val();
+        var val_num_house = $('#num_house').val();
+        var val_num_Flat = $('#num_Flat').val();
+        var val_count_rooms = $('#count_rooms').val();
+        var S1 = $('#selectType').val();
+        var S2 = $('#selectStreet').val();
+        var val_type = $('#selectType1').val();
+        $.get('/Order/createRandFolder',
+            { name: val_name },
+            function(folderName) {
+                var _files = document.getElementById('files').files;
+                var tth = upload(_files, "/Order/MultiUpload", folderName);
+                if (tth) {
+                    $.get('/Order/AddLot',
+                        {
+                            name: val_name,
+                            dis: val_dis,
+                            price: val_Price,
+                            aria: val_aria,
+                            type: val_type,
+                            street: S2,
+                            district: S1,
+                            num_house: val_num_house,
+                            num_flat: val_num_Flat,
+                            count_rooms: val_count_rooms,
+                            img_folder: folderName
+                        },
+                        function() {
+                            alert("Квартира добавлена");
+                        });
+                }
+            });
+    }
+    
+</script>

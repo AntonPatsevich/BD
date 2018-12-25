@@ -17,8 +17,12 @@ namespace WebApplication2.ModelsDB
 
         public int id { get; set; }
 
-        [StringLength(50)]
+        [StringLength(200)]
         public string street_def { get; set; }
+
+        public int? district_id { get; set; }
+
+        public virtual district district { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<lot> lot { get; set; }

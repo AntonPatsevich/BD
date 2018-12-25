@@ -74,6 +74,16 @@ namespace WebApplication2.Controllers
             };
             return View(model);
         }
+        public void UserBlock(string _id)
+        {
+            UserManager.SetLockoutEnabled(_id, true);
+            UserManager.SetLockoutEndDate(_id, new DateTime(2999, 1, 1));
+        }
+        public void UserUnlock(string _id)
+        {
+            UserManager.SetLockoutEnabled(_id, true);
+            UserManager.SetLockoutEndDate(_id, DateTime.Now);
+        }
 
         //
         // POST: /Manage/RemoveLogin

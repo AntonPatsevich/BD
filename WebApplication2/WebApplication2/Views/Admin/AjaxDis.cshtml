@@ -1,0 +1,58 @@
+﻿
+@model IEnumerable<WebApplication2.ModelsDB.district>
+<script>
+    function upload_dis(t, y) {
+        $.get('/Admin/UploadDis?name=' + $('#' + t).val() + "&index=" + y, function () {
+            loadStreetContent();
+        });
+    }
+</script>
+<div class="btn-group mb-2" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-outline-secondary" onclick="plasPosStreet(-1);"><img src="~/Content/Img/Icon/chevron-left.svg" width="100%" /></button>
+    <button type="button" class="btn btn-outline-secondary" onclick="plasPosStreet(1);"><img src="~/Content/Img/Icon/chevron-right.svg" width="100%" /></button>
+</div>
+@{ int index = 0; }
+<table class="table table-striped">
+    <tbody>
+
+        @foreach (var ff in @Model)
+        {
+            string str = "";
+            string str1 = "";
+            str = "#exampleModaldis" + @index.ToString();
+            string idtitle = "name_type_up" + @index.ToString();
+            index = index + 1;
+            str1 = str.Substring(1, str.Length - 1);
+            <tr>
+                <td>
+                    <div class="container pad">
+                        <div class="row" data-toggle="modal" data-target=@str>
+                            @ff.district_def
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            //rtquertouwyeriutywuertowuerytuweryotiueyrt
+            <div class="modal fade" id=@str1 tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Улица</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" value=@ff.district_def name="name" id=@idtitle class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" onclick="upload_dis('@idtitle', '@ff.id');" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">Изменить тип</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table>

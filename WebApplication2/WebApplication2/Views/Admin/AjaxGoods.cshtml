@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WebApplication2.ModelsDB.orderus>
+
+<script>
+    function upload_order_val(t) {
+        $.get('/Admin/TrueOrder', {id: t}, function () {
+            loadOrderContent();
+        });
+    }
+    function deleted_order(var1, var2) {
+        $.get('/Admin/DeletedGoods', { id: var1, id1: var2 }, function() {
+            loadOrderContent();
+        });
+        
+    }
+</script>
+<div class="btn-group mb-2" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-outline-secondary" onclick="plasPosOrder(-1);"><img src="~/Content/Img/Icon/chevron-left.svg" width="100%" /></button>
+    <button type="button" class="btn btn-outline-secondary" onclick="plasPosOrder(1);"><img src="~/Content/Img/Icon/chevron-right.svg" width="100%" /></button>
+</div>
+@{ int index = 0; }
+<table class="table table-striped">
+    <tbody>
+
+        @foreach (var ff in @Model)
+        {
+            string str = "";
+            string str1 = "";
+            str = "#orderGoods" + @index.ToString();
+            string idtitle = "name_order_up" + @index.ToString();
+            index = index + 1;
+            str1 = str.Substring(1, str.Length - 1);
+            <tr data-toggle="modal" data-target=@str>
+                <td>
+                    @ff.AspNetUsers1.UserName
+                </td>
+                <td>
+                    @ff.lot.name_lot
+                </td>
+                <td>
+                    @ff.date_selling
+                </td>
+                <td>
+                    @if (@ff.vir)
+                    {
+                        <img src="~/Content/Img/Icon/check.svg" width="100%" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/Img/Icon/x.svg" width="100%" />
+                    }
+                </td>
+               
+            </tr>
+            //rtquertouwyeriutywuertowuerytuweryotiueyrt
+            <div class="modal fade" id=@str1 tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">@ff.date_selling</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            @ff.AspNetUsers1.UserName
+                            <br />
+                            @ff.lot.name_lot
+                            <br />
+                            @ff.date_selling
+                            <br />
+                            @if (@ff.vir)
+                            {
+                                <img src="~/Content/Img/Icon/check.svg" width="100%" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/Img/Icon/x.svg" width="100%" />
+                            }
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" onclick="deleted_order(@ff.id);" data-dismiss="modal">Удалить</button>
+                            @if (!ff.vir)
+                            {
+                                <button type="submit" class="btn btn-primary" onclick="upload_order_val(@ff.id, @ff.lot_id);" data-dismiss="modal">Принять</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table>

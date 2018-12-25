@@ -9,11 +9,18 @@ namespace WebApplication2.ModelsDB
     [Table("district")]
     public partial class district
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public district()
+        {
+            street = new HashSet<street>();
+        }
+
         public int id { get; set; }
 
-        [StringLength(50)]
+        [StringLength(200)]
         public string district_def { get; set; }
 
-        public int? count_sells_objects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<street> street { get; set; }
     }
 }

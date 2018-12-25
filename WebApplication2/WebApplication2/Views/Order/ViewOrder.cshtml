@@ -1,0 +1,256 @@
+﻿@model WebApplication2.ModelsDB.lot
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/Slick/slick.css")
+@Styles.Render("~/Content/Slick/slick-theme.css")
+@Scripts.Render("~/Scripts/Slick/slick.min.js")
+<style>
+    .t {
+        margin: 10px 0px 10px 0px;
+    }
+
+    .k {
+        border-radius: 15px;
+    }
+
+    .g {
+        padding: 0px 30px 0px 30px;
+    }
+
+    .f {
+        margin-bottom: 5px;
+    }
+
+
+    .main {
+        font-family: Arial;
+        width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    h3 {
+        background: #fff;
+        color: #3498db;
+        font-size: 36px;
+        line-height: 100px;
+        margin: 10px;
+        padding: 2%;
+        position: relative;
+        text-align: center;
+    }
+
+    .action {
+        display: block;
+        margin: 100px auto;
+        width: 100%;
+        text-align: center;
+    }
+
+        .action a {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #f30;
+            color: #fff;
+            text-decoration: none;
+        }
+
+            .action a:hover {
+                background: #000;
+            }
+
+    .img1 {
+        height: 300px;
+        width: 100%;
+    }
+
+    .img2 {
+        height: 100px;
+        width: 100%;
+    }
+</style>
+
+
+
+<div class="container">
+    <div class="row t">
+        <div class="col-xl-6 g">
+            @{
+                var serv_path = Server.MapPath("~/UserMedia/Goods/");
+                string str_f = Path.Combine(serv_path, Model.FolderImg);
+                string[] str_files = Directory.GetFiles(str_f, "*", SearchOption.AllDirectories);
+            }
+
+            <div class="main">
+                <div class="slider slider-for f">
+                    @foreach (var pathstr in str_files)
+                    {
+                        <div><img class="img1" src=@Url.Content("~/UserMedia/Goods/" + Model.FolderImg + "/" + Path.GetFileName(pathstr)) /></div>
+                    }
+                </div>
+                <div class="slider slider-nav">
+                    @foreach (var pathstr in str_files)
+                    {
+                        <div><img class="img2" src=@Url.Content("~/UserMedia/Goods/" + Model.FolderImg + "/" + Path.GetFileName(pathstr)) /></div>
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xl-6">
+            <h1 class="display-4">@Model.name_lot</h1></br>
+            <h4>@Model.Descriptionn</h4>
+        </div>
+    </div>
+    <div class="row t">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Параметры</th>
+                    <th scope="col">Значение</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <th scope="row">Площадь</th>
+                    <td>@Model.area</td>
+                </tr>
+                <tr>
+                    <th scope="row">Количество комнат</th>
+                    <td>@Model.count_rooms</td>
+                </tr>
+                <tr>
+                    <th scope="row">Тип Объекта</th>
+                    <td>@Model.lots_type.Type_Def</td>
+                </tr>
+                <tr>
+                    <th scope="row">Цена</th>
+                    <td>@Model.price</td>
+                </tr>
+                <tr>
+                    <th scope="row">Номер квартиры</th>
+                    <td>@Model.number_flat</td>
+                </tr>
+                <tr>
+                    <th scope="row">Номер дома</th>
+                    <td>@Model.number_house</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    @if (User.IsInRole("user"))
+    {
+        <div align="center">
+            <a href=@Url.Action("AddOrder","Home", new { Id = Model.id }) type="button" class="btn  k btn-primary">
+                By good
+            </a>
+        </div>
+    }
+
+</div>
+<script>
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    $('.slider-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        focusOnSelect: true
+    });
+
+    $('a[data-slide]').click(function (e) {
+        e.preventDefault();
+        var slideno = $(this).data('slide');
+        $('.slider-nav').slick('slickGoTo', slideno - 1);
+    });
+</script>
+@*<a href=@Url.Action("Index","Report", new { Id = Model.id }) type="button" class="btn btn-primary btn-lg btn-block">
+    Report
+</a>
+<h4>Comments</h4>
+@if (User.IsInRole("user"))
+{
+    <div class="form-group">
+        <textarea class="form-control" id="exampleFormControlTextarea1" style="max-width: 100%;" rows="3"></textarea>
+    </div>
+    <button type="button" id="addCom" class="btn btn-primary btn-lg btn-block">Add comments</button>
+}
+<div id="comments_area" class="list-group">
+
+</div>
+<div id="comments_area1" class="list-group" style="display: none;">
+
+</div>
+
+<script>
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    $('#addCom').click(function () {
+        var te = $('#exampleFormControlTextarea1').val();
+        if (!te.trim()) {
+            $('#exampleFormControlTextarea1').val("");
+            alert("Поле не заполнено");
+        } else {
+            $.get('/Home/addComments', { text: te.toString(), id_goods: @Model.id }, function (_bool) {
+                if (_bool) {
+                    com_pos = 0;
+                    var str = '/Home/Comments?id=' + @Model.id + '&pos=' + com_pos + '&count=' + 3;
+                    com_pos = 3;
+                    $('#comments_area').load(str);
+                    $('#exampleFormControlTextarea1').val("");
+                }
+            });
+        }
+    });
+    $('.slider-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        focusOnSelect: true
+    });
+
+    $('a[data-slide]').click(function (e) {
+        e.preventDefault();
+        var slideno = $(this).data('slide');
+        $('.slider-nav').slick('slickGoTo', slideno - 1);
+    });
+    var com_pos = 0;
+    $(document).ready(function () {
+        com_pos = 0;
+        var str = '/Home/Comments?id=' +@Model.id+'&pos=' + com_pos + '&count=' + 3;
+        $('#comments_area').load(str);
+        com_pos = com_pos + 3;
+    });
+    $(window).scroll(function () {
+        var st = $(window).scrollTop();
+        var sh = $(document).height();
+        var wh = $(window).height();
+        if (st > sh - wh - 200) {
+            loadItems();
+        }
+    });
+    function loadItems() {
+        var str = '/Home/Comments?id=' +@Model.id+'&pos=' + com_pos + '&count=' + 3;
+        com_pos = com_pos + 3;
+        $('#comments_area1').load(str);
+        var rr = $('#comments_area1').html();
+        $('#comments_area').append(rr);
+    }
+</script>*@

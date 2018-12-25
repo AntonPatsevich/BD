@@ -18,8 +18,8 @@ namespace WebApplication2.ModelsDB
         public int id { get; set; }
 
         [Required]
-        [StringLength(150)]
-        public string name { get; set; }
+        [StringLength(200)]
+        public string name_lot { get; set; }
 
         [Required]
         [StringLength(150)]
@@ -41,14 +41,10 @@ namespace WebApplication2.ModelsDB
         public int? number_flat { get; set; }
 
         public int? count_rooms { get; set; }
+        public string userId { get; set; }
+        public string FolderImg { get; set; }
 
-        public int? district_id { get; set; }
-
-        public int? Raiting { get; set; }
-
-        [StringLength(150)]
-        public string Metro_stations { get; set; }
-
+        public virtual AspNetUsers User { get; set; }
         public virtual street street { get; set; }
 
         public virtual lots_type lots_type { get; set; }

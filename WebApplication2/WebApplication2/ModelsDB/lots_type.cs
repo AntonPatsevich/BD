@@ -17,7 +17,7 @@ namespace WebApplication2.ModelsDB
         public int id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(200)]
         public string Type_Def { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

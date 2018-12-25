@@ -1,0 +1,8 @@
+﻿@model IEnumerable<WebApplication2.ModelsDB.street>
+<label for="selectStreet">Улица</label>
+<select id="selectStreet" style="max-width: 100%;" class="custom-select my-1 mr-sm-2">
+    @foreach (var ff in Model)
+    {
+        <option>@ff.street_def</option>
+    }
+</select>

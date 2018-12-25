@@ -9,7 +9,7 @@ namespace WebApplication2.Controllers
 {
     public class HomeController : Controller
     {
-        RealtO db1 = new RealtO();
+        public MyDataSourceInBottle db1 = new MyDataSourceInBottle();
         public ActionResult Index()
         {
             return View();
@@ -46,5 +46,10 @@ namespace WebApplication2.Controllers
 
             return View();
         }
+
+
+
+
+
     }
 }

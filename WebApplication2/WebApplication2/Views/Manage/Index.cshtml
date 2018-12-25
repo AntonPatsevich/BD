@@ -5,83 +5,226 @@
 
 <h2>@ViewBag.Title.</h2>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Изменение параметров учетной записи</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Пароль:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Смена пароля", "ChangePassword")
+@if (this.User.IsInRole("user"))
+{
+    <style>
+        .not-active {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+    <div class="row">
+        <button type="button" onclick="window.location.href = '@Url.Action("AddLot", "User")'" class="btn btn-primary btn-lg btn-block">Block level button</button>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="shadow1 p-3 mb-5 bg-white rounded">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item ">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Покупка</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Продажа</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Все</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div id="results1"></div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div id="results2"></div>
+                    </div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        <div id="results3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var pos_true_order = 0;
+        var pos_false_order = 0;
+        var pos_all_order = 0;
+        $(document).ready(function () {
+            $('#results1').load('/User/AjaxShopIn?pos=' + pos_true_order + '&count=' + 10);
+            $('#results2').load('/User/AjaxShopOut?pos=' + pos_false_order + '&count=' + 10);
+            $('#results3').load('/User/AjaxAll?pos=' + pos_all_order + '&count=' + 10);
+        });
+
+        function true_order(t, loc, results) {
+            pos_true_order = pos_true_order + t;
+            pos_true_order = numI(pos_true_order);
+            _cb(pos_true_order, loc, results);
+        }
+
+        function false_order(t, loc, results) {
+            pos_false_order = pos_false_order + t;
+            pos_false_order = numI(pos_false_order);
+            _cb(pos_true_order, loc, results);
+        }
+
+        function all_order(t, loc, results) {
+            pos_all_order = pos_all_order + t;
+            pos_all_order = numI(pos_all_order);
+            _cb(pos_true_order, loc, results);
+        }
+
+        function numI(N) {
+            if (N < 0) {
+                return 0;
+            } else {
+                return N;
             }
-            else
-            {
-                @Html.ActionLink("Создать", "SetPassword")
+        }
+
+        function _cb(t, loc, results) {
+
+            $(results).load('/Manage/' + loc + '?numb=' + t + '&count=' + 10);
+        }
+    </script>
+}
+@if (this.User.IsInRole("admin"))
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="shadow1 p-3 mb-5 bg-white rounded">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item ">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Пользователи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Продажа</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Улицы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="dis-tab" data-toggle="tab" href="#dis_A" role="tab" aria-controls="dis_A" aria-selected="false">Районы</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                        <div id="results1"></div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <form class="form-inline my-2 my-lg-0">
+                                <div class="input-group mr-2">
+                                    <input class="form-control" id="serch_line_order" type="search" placeholder="Поиск текста" aria-label="Search">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" id="search_order_btn" type="button">Поиск</button>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-outline-success my-2 my-sm-0">
+                                        Добавить тип
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="results2"></div>
+                    </div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <form class="form-inline my-2 my-lg-0">
+                                <div class="input-group mr-2">
+                                    <input class="form-control" id="serch_line_street" type="search" placeholder="Поиск текста" aria-label="Search">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" id="search_street_btn" type="button">Поиск</button>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-outline-success my-2 my-sm-0">
+                                        Добавить тип
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="results3"></div>
+                    </div>
+                    <div class="tab-pane fade" id="dis_A" role="tabpanel" aria-labelledby="dis_A-tab">
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <form class="form-inline my-2 my-lg-0">
+                                <div class="input-group mr-2">
+                                    <input class="form-control" id="serch_line_dis" type="search" placeholder="Поиск текста" aria-label="Search">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" id="search_dis_btn" type="button">Поиск</button>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-outline-success my-2 my-sm-0">
+                                        Добавить тип
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="results4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var pos_true_order = 0;
+        var pos_false_order = 0;
+        var pos_all_order = 0;
+        //
+        var pos_admin_st = 0;
+        var pos_admin_user = 0;
+        var pos_admin_order = 0;
+        var pos_admin_goods = 0;
+        var pos_admin_dis = 0;
+        $(document).ready(function () {
+            $('#results1').load('/Admin/AjaxUsers?nameuser=&numb=' + pos_admin_user + '&count=' + 10);
+            $('#results2').load('/Admin/AjaxGoods?nameuser=&numb=' + pos_admin_order + '&count=' + 10);
+            $('#results3').load('/Admin/AjaxStreet?nameuser=&numb=' + pos_admin_st + '&count=' + 10);
+            $('#results4').load('/Admin/AjaxDis?nameuser=&numb=' + pos_admin_dis + '&count=' + 10);
+        });
+        function numcheck(pa) {
+            if (pa < 0) {
+                return 0;
+            } else {
+                return pa;
             }
-            ]
-        </dd>
-        <dt>Внешние имена входа:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Управление", "ManageLogins") ]
-        </dd>
-        @*
-            Номера телефонов можно использовать в качестве второго проверочного фактора для системы двухфакторной проверки подлинности.
-             
-             В <a href="https://go.microsoft.com/fwlink/?LinkId=403804">этой статье</a>
-                можно узнать, как настроить для этого приложения ASP.NET двухфакторную проверку подлинности с использованием SMS.
-             
-             Настроив двухфакторную проверку подлинности, раскомментируйте следующий блок
-        *@
-        @*  
-            <dt>Номер телефона:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Удалить" class="btn-link" />]</text>
-                    }
-                }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
-        *@
-        <dt>Двухфакторная проверка подлинности:</dt>
-        <dd>
-            <p>
-                Поставщики двухфакторной проверки подлинности не настроены. В <a href="https://go.microsoft.com/fwlink/?LinkId=403804">этой статье</a>
-                можно узнать, как настроить двухфакторную проверку подлинности для этого приложения ASP.NET.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Включено
-                        <input type="submit" value="Отключить" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Отключено
-                        <input type="submit" value="Включить" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
-        </dd>
-    </dl>
-</div>
+        }
+        function plasPosUser(parametr1) {
+            pos_admin_user = pos_admin_user + 10 * parametr1;
+            pos_admin_user = numcheck(pos_admin_user);
+            $('#results1').load('/Admin/AjaxUsers?nameuser=&numb=' + pos_admin_user + '&count=' + 10);
+        }
+        //
+        function loadOrderContent() {
+            var tt = $('#serch_line_order').val();
+            $('#results2')
+                .load('/Admin/AjaxGoods?nameuser='+tt+'&numb=' + pos_admin_order + '&count=' + 10);
+        }
+        function loadStreetContent() {
+            var tt = $('#serch_line_street').val();
+            $('#results3')
+                .load('/Admin/AjaxStreet?nameuser=' + tt + '&numb=' + pos_admin_st + '&count=' + 10);
+        }
+        function loadStreetContent() {
+            var tt = $('#serch_line_dis').val();
+            $('#results4')
+                .load('/Admin/AjaxDis?nameuser=' + tt + '&numb=' + pos_admin_dis + '&count=' + 10);
+        }
+        //
+        $('#search_order_btn').click(function() {
+            pos_admin_order = 0;
+            loadOrderContent();
+        });
+        $('#search_street_btn').click(function() {
+            pos_admin_order = 0;
+            loadStreetContent();
+        });
+        $('#search_dis_btn').click(function() {
+            pos_admin_dis = 0;
+            loadStreetContent();
+        });
+
+    </script>
+}

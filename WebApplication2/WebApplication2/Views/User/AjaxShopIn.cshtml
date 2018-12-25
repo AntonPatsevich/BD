@@ -1,0 +1,22 @@
+﻿@model IEnumerable<WebApplication2.ModelsDB.orderus>
+
+
+@foreach (var ff in Model)
+{
+    <a class="not-active" href=@Url.Action("ViewOrder", "Order", new {id = @ff.lot_id})>
+        <table class="table">
+            <tbody>
+
+            <tr onclick="lp(@ff.lot_id);">
+                <th>@ff.lot.name_lot</th>
+                <td>@ff.lot.area</td>
+                <td>@ff.lot.lots_type.Type_Def</td>
+                <td>@ff.AspNetUsers1.UserName</td>
+            </tr>
+
+
+            </tbody>
+        </table>
+    </a>
+
+}
