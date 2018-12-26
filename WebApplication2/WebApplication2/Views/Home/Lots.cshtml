@@ -1,37 +1,162 @@
-﻿@model IEnumerable<WebApplication2.ModelsDB.lot>
+﻿@model WebApplication2.Models.AllThis
 @using WebApplication2.ModelsDB
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{
-    ViewBag.Title = "Каталог недвижимости";
-}
-<h2>Каталог недвижимости</h2>
-<@*form method="get">
-    <div class="form-inline">
-        <label class="control-label">Тип: </label>
-        @Html.DropDownList("team", Model.Teams as SelectList,
-                    htmlAttributes: new { @class = "form-control" })
+<style>
+    .vib {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
 
-        <label class="control-label">Район: </label>
-        @Html.DropDownList("position", Model.Positions as SelectList,
-                htmlAttributes: new { @class = "form-control" })
+    .in {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
 
-        <input type="submit" value="Фильтр" class="btn btn-default" />
+    .re {
+        width: 100%;
+    }
+
+    .jopa {
+        background: #ff4422;
+    }
+
+    .fff {
+        margin: 5px;
+        border: 2px;
+        border-radius: 5px;
+    }
+
+    .uuu {
+        clear: both;
+    }
+
+    .ccccc {
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        vertical-align: middle;
+        content: "";
+        background: no-repeat center center;
+        background-size: 100% 100%;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        @*Сортировк*@
+        <div class="col-12 col-lg-3 bd-sidebar">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light vib">
+                <button class="navbar-toggler re" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="ccccc"><img src="~/Content/Img/Icon/caret-bottom.svg" width="100%"/></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent1">
+                    <dl class="re">
+                        <dt>
+                            <p>Цена</p>
+                            <select class="nav-item form-control in" id="sel1" style="max-width: 100%;">
+                                @*<option value="1" selected>Популярные</option>*@
+                                <option value="2"selected>Дешевые</option>
+                                <option value="3">Дорогие</option>
+                                @*<option value="4">Новые</option>*@
+                            </select>
+                        </dt>
+                        <dt>
+                            <label for="customRange3">Не больше</label><br />
+                                                                       <small id="pr_l">5800000</small>
+                            <input type="range" oninput="upline()" class="custom-range" value="100" min="1" max="100" step="1" id="customRange3">
+                        </dt>
+                        <dt>
+                            <label for="sel2">Район</label>
+                            <select class="nav-item form-control in" id="sel2" style="max-width: 100%;">
+                                @foreach (var ff in @Model.Districts)
+                                {
+                                    <option value=@ff.district_def selected>@ff.district_def</option>
+                                }
+                            </select>
+                        </dt>
+                        <dt>
+                            <label for="sel3">Тип</label>
+                            <select class="nav-item form-control in" id="sel3" style="max-width: 100%;">
+                                @foreach (var ff in @Model.LotsTypes)
+                                {
+                                    <option value=@ff.Type_Def selected>@ff.Type_Def</option>
+                                }
+                            </select>
+                        </dt>
+                        <dt>
+                            <button type="button" id="btn_param_car" class="btn btn-primary btn-lg btn-block">Найти</button>
+                        </dt>
+                    </dl>
+                </div>
+            </nav>
+        </div>
+
+        <div class="col-12 col-lg-9">
+            <div class="row">
+                <div class="input-group mt-2 col-12">
+                    <input type="text" style="max-width: 100%;" id="stext" class="form-control" placeholder="Поиск текста" aria-label="Поиск текста" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Поиск</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="aria_card">
+
+            </div>
+        </div>
     </div>
-</form>
-<hr />*
+</div>
+<script>
+    var pos_car = 0;
+    var count_car = 50;
+
+    function upline() {
+        var t = $('#customRange3').val();
+        if (t <= 40) {
+            var tt = t * 20000;
+            $('#pr_l').html(tt);
+        } else if(t<=60) {
+            var t = t - 40;
+            var tt = 40 * 20000;
+            var ts = t * 50000;
+            tt = tt + ts;
+            $('#pr_l').html(tt);
+        } else {
+            var t = t - 60;
+            var ts = 1800000 + t * 100000;
+            $('#pr_l').html(ts);
+        }
+        
+    }
+    $(document).ready(function () {
+        loadItems();
+    });
+    $("#btn_param_car").click(function () {
+        loadItems();
+    });
+    $("#button-addon2").click(function () {
+        loadItems();
+    });
 
 
-@foreach (var lot in Model)
-{<div class="well well-large todiv">
+    //$(window).scroll(function() {
+    //    var st = $(window).scrollTop();
+    //    var sh = $(document).height();
+    //    var wh = $(window).height();
+    //    if (st > sh - wh - 100) {
+    //        loadItems();
+    //    }
+    //});
 
-
-        <a href=@Url.Action("Lot", "Home", new { id = lot.id })><h4>@lot.name </h4></a>
-        <p>Описание: @lot.Descriptionn</p>
-        <p>Цена: @lot.price</p>
-        <p>Площадь: @lot.area</p>
-        <a class="btn btn-success" href=@Url.Action("Lot", "Home", new { id = lot.id })>Подробнее</a>
-    </div>
-
-}
+    function loadItems() {
+        var str1 = $("#sel1").val();
+        var str2 = $("#sel2").val();
+        var str3 = $("#sel3").val();
+        var maxP = $('#pr_l').html();
+        var Stext = $('#stext').val();
+        var str = "/Home/lot?pos=" + pos_car + "&count=" + count_car + "&nameS=" + Stext +
+            "&price=" + maxP+ "&typeO="+ str3 + "&typeG="+str1+"&dis="+str2;
+        $('#aria_card').load(str);
+    }
+</script>

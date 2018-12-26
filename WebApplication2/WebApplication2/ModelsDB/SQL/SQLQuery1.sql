@@ -86,5 +86,6 @@ insert street values (N'Белецкого',5)
 insert street values (N'Колесникова',6)
 
 
-SELECT * FROM orderus
+
+
  

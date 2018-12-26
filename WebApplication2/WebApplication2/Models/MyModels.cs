@@ -30,4 +30,10 @@ namespace WebApplication2.Models
         public List<district> Districts { get; set; }
         public List<lots_type> LotsTypes { get; set; }
     }
+
+    public class AllThis
+    {
+        public List<district> Districts { get; set; }
+        public List<lots_type> LotsTypes { get; set; }
+    }
 }
