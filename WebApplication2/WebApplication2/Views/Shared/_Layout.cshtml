@@ -22,10 +22,9 @@
             </button>
             <div class="navbar-collapse collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">@Html.ActionLink("Домашняя страница", "Index", "Home", new {@class= "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Каталог", "lots", "Home", new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("О программе", "About", "Home", new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Контакт", "Contact", "Home", new { @class = "nav-link" })</li>
+                    <li class="nav-item"><a class="nav-link" href=@Url.Action("Index", "Home")>Каталог</a></li>
+                    <li class="nav-item"><a class="nav-link" href=@Url.Action("lots", "Home")>Каталог</a></li>
+                    <li class="nav-item"><a class="nav-link" href=@Url.Action("About", "Home")>Каталог</a></li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

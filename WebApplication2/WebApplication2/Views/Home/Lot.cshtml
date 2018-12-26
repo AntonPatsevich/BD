@@ -1,22 +1,32 @@
-﻿@model IEnumerable < WebApplication2.ModelsDB.lot>
+﻿@model IEnumerable<WebApplication2.ModelsDB.lot>
 
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-@{
-    ViewBag.Title = "Информация о недвижимости";
-}
-<h2>Информация о недвижимости</h2>
-<hr />
-@foreach (var lot in Model)
-{<div>
-        <h4>@lot.name</h4>
-        <p>Район: @lot.street.district.district_def</p>
-        <p>Улица: @lot.street.street_def </p>
-        <p>Цена: @lot.price $</p>
-        <p>Площадь: @lot.area кв.м</p>
-        <p>Тип: @lot.lots_type.Type_Def</p>
-        <a class="btn btn-primary" href=@Url.Action("Lots", "Home", new { id = lot.id })>Назад</a>
+
+
+
+@foreach (var ff in Model)
+{
+
+    <!--werwerweprituweripotupwioerutpiwuertipowuerpiou-->
+    <div class="col-lg-4 col-sm-12">
+        <div class="card mb-2 mt-2" onclick="return location.href = ' @Url.Action("ViewGood", "Home", new {id = ff.id})';">
+            @if (@ff.FolderImg != "")
+            {
+                var serv_path = Server.MapPath("~/UserMedia/Goods/");
+                string str_f = Path.Combine(serv_path, @ff.FolderImg);
+                string[] str_files = Directory.GetFiles(str_f, "*", SearchOption.AllDirectories);
+                <img class="card-img-top" width="100%" height="100%" src=@Url.Content("~/UserMedia/Goods/" + ff.FolderImg + "/" + Path.GetFileName(str_files[0])) alt="Card image cap">
+            }
+            else
+            {
+                <img class="card-img-top" width="100%" height="100%" src="https://fch.lisboa.ucp.pt/sites/default/files/assets/images/avatar-fch_8.png" alt="Card image cap">
+            }
+            <div class="card-body">
+                <h4 class="card-title">@ff.name_lot</h4>
+                <h5>$@ff.price</h5>
+                <p class="card-text">@ff.Descriptionn</p>
+                <p class="card-text"><small class="text-muted">@ff.street.street_def&nbsp;@ff.street.district.district_def</small></p>
+            </div>
+        </div>
     </div>
 }
 
