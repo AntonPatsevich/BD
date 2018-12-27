@@ -23,7 +23,7 @@ namespace WebApplication2.Controllers
             return View();
         }
 
-        [Authorize]
+        
         public ActionResult lots()
         {
             var x = new AllThis();
@@ -32,7 +32,7 @@ namespace WebApplication2.Controllers
             return View(x);
 
         }
-        [Authorize]
+        
         public ActionResult Lot(int pos, int count, string nameS, decimal price, string typeO, int typeG, string dis)
         {
             var allgoods = new List<lot>();

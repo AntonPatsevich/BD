@@ -138,6 +138,14 @@
                     <th scope="row">Номер дома</th>
                     <td>@Model.number_house</td>
                 </tr>
+                <tr>
+                    <th scope="row">Улица</th>
+                    <td>@Model.street.street_def</td>
+                </tr>
+                <tr>
+                    <th scope="row">Район</th>
+                    <td>@Model.street.district.district_def</td>
+                </tr>
 
             </tbody>
         </table>
@@ -146,7 +154,7 @@
     @if (User.IsInRole("user"))
     {
         <div align="center">
-            <a href=@Url.Action("AddOrder","Home", new { Id = Model.id }) type="button" class="btn  k btn-primary">
+            <a href=@Url.Action("AddOrder","Order", new { Id = Model.id }) type="button" class="btn  k btn-primary">
                 By good
             </a>
         </div>
